@@ -1,0 +1,36 @@
+name: test release-download
+on: [push]
+jobs:
+  unit-tests:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    env:
+      libav_osname: linux64
+      libav_extname: .tar.xz
+      libav_libdir: lib
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: recursive
+
+      - if: runner.os == 'Windows'
+        name: reset variable for windows
+        run: |
+          echo "libav_osname=win64" >> $Env:GITHUB_ENV
+          echo "libav_extname=.zip" >> $Env:GITHUB_ENV
+          echo "libav_libdir=bin"   >> $Env:GITHUB_ENV
+      - name: download ffmpeg
+        id: dl_libav
+        uses: vcup/release-downloader@f6358207bfc68d38ab5c85154466a0ab3f26c9bc
+        with:
+          repository: BtbN/FFmpeg-Builds
+          latest: true
+          # tag: latest
+          fileName: ffmpeg-*-${{ env.libav_osname }}-gpl-shared${{ env.libav_extname }}
+      - name: move libav
+        run: |
+          mkdir tmpdir dstdir
+          tar -xvf ${{ steps.dl_libav.outputs.downloaded_file.0 }} -C tmpdir
+          mv tmpdir/*/${{ env.libav_libdir }}/* dstdir/
