@@ -32,5 +32,5 @@ jobs:
       - name: move libav
         run: |
           mkdir tmpdir dstdir
-          tar -xvf ${{ steps.dl_libav.outputs.downloaded_file.0 }} -C tmpdir
+          tar -xvf ${{ steps.dl_libav.outputs.downloaded_file.$0 }} -C tmpdir
           mv tmpdir/*/${{ env.libav_libdir }}/* dstdir/
