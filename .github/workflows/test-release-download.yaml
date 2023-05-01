@@ -32,8 +32,8 @@ jobs:
       - name: move libav
         run: |
           mkdir tmpdir dstdir
-          ls -lha tmpdir
-          echo ${{ steps.dl_libav.outputs.downloaded_file }}
-          echo ${{ steps.dl_libav.outputs.downloaded_file.f0 }}
-          tar -xvf ${{ steps.dl_libav.outputs.downloaded_file.f0 }} -C tmpdir
+          ls -lha
+          echo ${{ steps.dl_libav.outputs.downloaded_files }}
+          echo ${{ fromJson(steps.dl_libav.outputs.downloaded_files)[0] }}
+          tar -xvf ${{ fromJson(steps.dl_libav.outputs.downloaded_files)[0] }} -C tmpdir
           mv tmpdir/*/${{ env.libav_libdir }}/* dstdir/
