@@ -23,7 +23,7 @@ jobs:
           echo "libav_libdir=bin"   >> $Env:GITHUB_ENV
       - name: download ffmpeg
         id: dl_libav
-        uses: vcup/release-downloader@f6358207bfc68d38ab5c85154466a0ab3f26c9bc
+        uses: vcup/release-downloader@c0b5eaa349da04ad879f60da5fcd057f699e6d7b
         with:
           repository: BtbN/FFmpeg-Builds
           latest: true
@@ -32,5 +32,5 @@ jobs:
       - name: move libav
         run: |
           mkdir tmpdir dstdir
-          tar -xvf ${{ steps.dl_libav.outputs.downloaded_file.$0 }} -C tmpdir
+          tar -xvf ${{ steps.dl_libav.outputs.downloaded_file.f0 }} -C tmpdir
           mv tmpdir/*/${{ env.libav_libdir }}/* dstdir/
